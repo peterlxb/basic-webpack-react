@@ -6,17 +6,23 @@ module.exports = {
   },
   mode: "development",
   output: {
-    //path: __dirname + "/dist",
     filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "dist"),
-    publicPath: "/"
+    path: path.resolve(__dirname, "../dist")
   },
   devServer: {
-    contentBase: "./dist",
+    contentBase: "dist",
     overlay: true
   },
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: "babel-loader"
+          }
+        ]
+      },
       {
         test: /\.css$/,
         use: [
@@ -38,7 +44,10 @@ module.exports = {
             }
           },
           {
-            loader: "extract-loader"
+            loader: "extract-loader",
+            options: {
+              publicPath: "../"
+            }
           },
           {
             loader: "html-loader",
