@@ -6,11 +6,14 @@ module.exports = {
   },
   mode: "development",
   output: {
+    //path: __dirname + "/dist",
     filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "../dist")
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/"
   },
   devServer: {
-    contentBase: "dist"
+    contentBase: "./dist",
+    overlay: true
   },
   module: {
     rules: [
@@ -22,6 +25,37 @@ module.exports = {
           },
           {
             loader: "css-loader"
+          }
+        ]
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].html"
+            }
+          },
+          {
+            loader: "extract-loader"
+          },
+          {
+            loader: "html-loader",
+            options: {
+              attr: ["img:src"]
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(jpg|gif|png)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "images/[name].[ext]"
+            }
           }
         ]
       }

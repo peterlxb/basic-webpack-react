@@ -1,3 +1,2 @@
 require("./main.css");
-
-console.log("Heelo");
+require("./index.html");
