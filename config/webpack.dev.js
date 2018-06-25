@@ -2,15 +2,29 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    main: "./src/index.js"
+    main: ["./src/main.js"]
   },
   mode: "development",
   output: {
     filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "../dist"),
-    publicPath: "/"
+    path: path.resolve(__dirname, "../dist")
   },
   devServer: {
     contentBase: "dist"
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader"
+          },
+          {
+            loader: "css-loader"
+          }
+        ]
+      }
+    ]
   }
 };
