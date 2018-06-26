@@ -1,4 +1,6 @@
 const path = require("path");
+const webpack = require("webpack");
+const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -7,16 +9,23 @@ module.exports = {
   mode: "development",
   output: {
     filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "../dist")
+    path: path.resolve(__dirname, "../dist"),
+    publicPath: "/"
   },
   devServer: {
     contentBase: "dist",
-    overlay: true
+    overlay: true,
+    hot: true,
+    stats: {
+      color: true
+    }
   },
+  devtool: "source-map",
   module: {
     rules: [
       {
         test: /\.js$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: "babel-loader"
@@ -35,30 +44,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.html$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].html"
-            }
-          },
-          {
-            loader: "extract-loader",
-            options: {
-              publicPath: "../"
-            }
-          },
-          {
-            loader: "html-loader",
-            options: {
-              attr: ["img:src"]
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(jpg|gif|png)$/,
+        test: /\.jpg$/,
         use: [
           {
             loader: "file-loader",
@@ -67,7 +53,36 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.html$/,
+        use: [
+          // {
+          //   loader: "file-loader",
+          //   options: {
+          //     name: "[name].html"
+          //   }
+          // },
+          // {
+          //   loader: "extract-loader",
+          //   options: {
+          //     publicPath: "../"
+          //   }
+          // },
+          {
+            loader: "html-loader"
+            // options: {
+            //   attr: ["img:src"]
+            // }
+          }
+        ]
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new HTMLWebpackPlugin({
+      template: "./src/index.html"
+    })
+  ]
 };
