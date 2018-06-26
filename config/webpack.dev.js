@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -43,17 +43,7 @@ module.exports = {
           }
         ]
       },
-      {
-        test: /\.jpg$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "images/[name].[ext]"
-            }
-          }
-        ]
-      },
+
       {
         test: /\.html$/,
         use: [
@@ -70,10 +60,21 @@ module.exports = {
           //   }
           // },
           {
-            loader: "html-loader"
-            // options: {
-            //   attr: ["img:src"]
-            // }
+            loader: "html-loader",
+            options: {
+              attr: ["img:src"]
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(jpg|gif|png)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "images/[name].[ext]"
+            }
           }
         ]
       }
@@ -81,7 +82,7 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new HTMLWebpackPlugin({
+    new HtmlWebpackPlugin({
       template: "./src/index.html"
     })
   ]
